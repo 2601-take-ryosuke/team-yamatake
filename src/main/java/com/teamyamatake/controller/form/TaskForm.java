@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class TaskForm {
+
     private int id;
     private String content;
     private TaskStatus status;
