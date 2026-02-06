@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script th:src="@{/js/top.js}"></script>
     <title>TOP</title>
 </head>
 <body>
@@ -13,7 +15,7 @@
     <div class="error-message-erea">
         <!-- エラーメッセージ実装箇所 -->
     </div>
-    <span class="todayDate" th:text="'本日の日付' + ${#temporals.format(todayDate, 'yyyy/MM/dd')}"></span>
+    <span class="todayDate" th:text="'本日の日付 ： ' + ${#temporals.format(todayDate, 'yyyy/MM/dd')}"></span>
     <br/><a th:href="@{/new}">
         <button class="new-button" type="button">新規タスク</button>
     </a>
@@ -43,7 +45,9 @@
                 </form>
             </td>
             <td>
-                <span class="limit" th:text="${#temporals.format(task.limitDate, 'yyyy/MM/dd')}"/>
+                <span class="limit"
+                      th:classappend="${task.limitDate.isBefore(todayDate)} ? 'limit-arrived' : 'limit-not-yet'"
+                      th:text="${#temporals.format(task.limitDate, 'yyyy/MM/dd')}"/>
             </td>
             <td>
                 <a th:href="@{/edit/{id}(id=${task.id})}">

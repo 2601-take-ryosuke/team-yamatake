@@ -33,8 +33,12 @@ input[type="submit"], [type="button"]{
 }
 
 .limit{
-    background-color: #F3F3F3;
+    background-color: #FFF6C4;
     padding: 3px 12px;
     border-radius: 24px;
     margin: 5px;
+}
+
+.limit-arrived{
+    background-color: #FF5353;
 }

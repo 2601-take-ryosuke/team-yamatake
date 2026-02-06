@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class TaskController {
     public ModelAndView top() {
         ModelAndView mav = new ModelAndView("/top");
         List<TaskForm> tasks = taskService.findAllTask();
-        mav.addObject("todayDate", LocalDate.now());
+        mav.addObject("todayDate", LocalDateTime.now());
         mav.addObject("statusList", List.of(TaskStatus.values()));
         mav.addObject("tasks", tasks);
         return mav;
