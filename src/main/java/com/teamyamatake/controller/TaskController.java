@@ -32,14 +32,4 @@ public class TaskController {
         mav.addObject("tasks", tasks);
         return mav;
     }
-
-    private List<String> getStatusViewNameList(){
-        List<TaskStatus> statusList = List.of(TaskStatus.values());
-
-        List<String> viewNameList = new LinkedList<>();
-        for (TaskStatus status: statusList){
-            viewNameList.add(status.getViewName());
-        }
-        return viewNameList;
-    }
 }
