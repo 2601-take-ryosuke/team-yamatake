@@ -22,6 +22,10 @@ public class TaskService {
         return tasks;
     }
 
+    public void deleteTask(Integer id) {
+        taskRepository.deleteById(id);
+    }
+
     /*
      * DBから取得したデータをFormに設定
      */
