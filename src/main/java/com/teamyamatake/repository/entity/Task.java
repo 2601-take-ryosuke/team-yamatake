@@ -1,6 +1,5 @@
 package com.teamyamatake.repository.entity;
 
-import com.teamyamatake.common.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "task")
+@Table(name = "tasks")
 @Getter
 @Setter
 public class Task {
@@ -24,7 +23,7 @@ public class Task {
     private String content;
 
     @Column
-    private TaskStatus status;
+    private Integer status;
 
     @Column
     private LocalDateTime limitDate;

@@ -1,6 +1,8 @@
 package com.teamyamatake.controller;
 
+import com.teamyamatake.common.enums.TaskStatus;
 import com.teamyamatake.controller.form.TaskForm;
+import com.teamyamatake.repository.entity.Task;
 import com.teamyamatake.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -24,6 +30,10 @@ public class TaskController {
     @GetMapping
     public ModelAndView top() {
         ModelAndView mav = new ModelAndView("/top");
+        List<TaskForm> tasks = taskService.findAllTask();
+        mav.addObject("todayDate", LocalDate.now());
+        mav.addObject("statusList", List.of(TaskStatus.values()));
+        mav.addObject("tasks", tasks);
         return mav;
     }
 
@@ -46,13 +56,14 @@ public class TaskController {
      * 新規タスク追加処理
      */
     @PostMapping("/add")
-    @ResponseBody
-    public ModelAndView addContent(@Validated @ModelAttribute("formModel") TaskForm TaskForm,
-                                   BindingResult result){
+    public ModelAndView addContent(@Validated @ModelAttribute("formModel") TaskForm taskForm,
+                                   BindingResult result) {
+
         if (result.hasErrors()) {
             return new ModelAndView("/new");
         }
-        taskService.saveTask(TaskForm);
+
+        taskService.saveTask(taskForm);
 
         return new ModelAndView("redirect:/");
     }

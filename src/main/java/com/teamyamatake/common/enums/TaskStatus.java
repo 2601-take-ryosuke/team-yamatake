@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum TaskStatus {
-    NotStarted(0, "未着手"),
-    InProgress(1, "実行中"),
-    Waiting(2, "ステイ中"),
-    Done(3, "完了");
+    NotStarted(1, "未着手"),
+    InProgress(2, "実行中"),
+    Waiting(3, "ステイ中"),
+    Done(4, "完了");
 
     private final int value;
     private final String viewName;
@@ -31,5 +31,15 @@ public enum TaskStatus {
 
     public boolean isDone() {
         return this == Done;
+    }
+
+    public static TaskStatus getType(final int value) {
+        TaskStatus[] types = TaskStatus.values();
+        for (TaskStatus type : types) {
+            if (type.getValue() == value) {
+                return type;
+            }
+        }
+        return null;
     }
 }

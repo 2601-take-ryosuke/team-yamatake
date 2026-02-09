@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
@@ -7,10 +7,56 @@
 </head>
 <body>
 <div class="header-contents">
-    <h1>ToDoリスト</h1>
+    <h1>ToDo</h1>
 </div>
 <div class="main-contents">
-    <p>This is Yamatake's ToDo List</p>
+    <div class="error-message-erea">
+        <!-- エラーメッセージ実装箇所 -->
+    </div>
+    <span class="todayDate" th:text="'本日の日付' + ${#temporals.format(todayDate, 'yyyy/MM/dd')}"></span>
+    <br/><a th:href="@{/new}">
+        <button class="new-button" type="button">新規タスク</button>
+    </a>
+    <div class="filter-erea">
+        <!-- フィルター実装箇所 -->
+    </div>
+    <table class="task-table">
+        <tr>
+            <th>タスク内容</th>
+            <th>ステータス</th>
+            <th>タスク期限</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr th:each="task : ${tasks}">
+            <td>
+                <span class="content" th:text="${task.content}"></span>
+            </td>
+            <td class="status">
+                <form th:object="${task}">
+                    <select class="status-dropdown">
+                        <option th:value="0"></option>
+                        <option th:each="status : ${statusList}" th:value="${status.value}" th:text="${status.viewName}"
+                                th:selected="${task.status == status}"></option>
+                        <input type="submit" value="変更">
+                    </select>
+                </form>
+            </td>
+            <td>
+                <span class="limit" th:text="${#temporals.format(task.limitDate, 'yyyy/MM/dd')}"/>
+            </td>
+            <td>
+                <a th:href="@{/edit/{id}(id=${task.id})}">
+                    <input class="edit-button" type="button" value="編集">
+                </a>
+            </td>
+            <td>
+                <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
+                    <input class="delete-button" type="submit" value="削除">
+                </form>
+            </td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>
