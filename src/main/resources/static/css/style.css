@@ -42,3 +42,38 @@ input[type="submit"], [type="button"]{
 .limit-arrived{
     background-color: #FF5353;
 }
+
+.form-area {
+    max-width: 500px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.form-area label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-area textarea,
+.form-area input[type="datetime-local"],
+.form-area input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-area input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.field-error {
+    color: #b00020;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}

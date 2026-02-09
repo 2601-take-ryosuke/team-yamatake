@@ -10,10 +10,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +47,37 @@ public class TaskController {
     @DeleteMapping("/delete/{id}")
     public ModelAndView deleteContent(@PathVariable Integer id) {
         taskService.deleteTask(id);
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * 新規タスク追加画面表示
+     */
+    @GetMapping("/new")
+    public ModelAndView newContent() {
+        ModelAndView mav = new ModelAndView();
+        // form用の空のentityを準備
+        TaskForm taskForm = new TaskForm();
+        // 画面遷移先を指定
+        mav.setViewName("/new");
+        // 準備した空のFormを保管
+        mav.addObject("formModel", taskForm);
+        return mav;
+    }
+
+    /*
+     * 新規タスク追加処理
+     */
+    @PostMapping("/add")
+    public ModelAndView addContent(@Validated @ModelAttribute("formModel") TaskForm taskForm,
+                                   BindingResult result) {
+
+        if (result.hasErrors()) {
+            return new ModelAndView("/new");
+        }
+
+        taskService.saveTask(taskForm);
+
         return new ModelAndView("redirect:/");
     }
 }

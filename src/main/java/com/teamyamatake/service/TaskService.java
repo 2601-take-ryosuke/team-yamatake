@@ -47,6 +47,16 @@ public class TaskService {
     }
 
     /*
+     * タスク追加
+     */
+    public void saveTask(TaskForm reqTask) {
+        // 新規タスク作成時はステータスを未着手に設定
+        reqTask.setStatus(TaskStatus.NotStarted);
+        Task saveReport = setTaskEntity(reqTask);
+        taskRepository.save(saveReport);
+    }
+
+    /*
      * リクエストから取得した情報をEntityに設定
      */
     private Task setTaskEntity(TaskForm reqTask) {
