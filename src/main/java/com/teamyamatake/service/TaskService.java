@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class TaskService {
@@ -54,6 +53,16 @@ public class TaskService {
         reqTask.setStatus(TaskStatus.NotStarted);
         Task saveReport = setTaskEntity(reqTask);
         taskRepository.save(saveReport);
+    }
+
+    /*
+     * 編集画面表示
+     */
+    public TaskForm editTask(Integer id) {
+        List<Task> results = new ArrayList<>();
+        results.add(taskRepository.findById(id).orElse(null));
+        List<TaskForm> reports = setTaskForm(results);
+        return reports.get(0);
     }
 
     /*

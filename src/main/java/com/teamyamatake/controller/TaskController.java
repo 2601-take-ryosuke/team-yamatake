@@ -2,25 +2,15 @@ package com.teamyamatake.controller;
 
 import com.teamyamatake.common.enums.TaskStatus;
 import com.teamyamatake.controller.form.TaskForm;
-import com.teamyamatake.repository.entity.Task;
 import com.teamyamatake.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -78,6 +68,39 @@ public class TaskController {
 
         taskService.saveTask(taskForm);
 
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * タスク編集画面表示
+     */
+    @GetMapping("/edit/{id}")
+    public ModelAndView editContent(@PathVariable Integer id) {
+        ModelAndView mav = new ModelAndView();
+        // form用の空のentityを準備
+        TaskForm taskForm = taskService.editTask(id);
+        // 準備した空のFormを保管
+        mav.addObject("formModel", taskForm);
+        // 画面遷移先を指定
+        mav.setViewName("/edit");
+        return mav;
+    }
+
+    /*
+     * 編集処理
+     */
+    @PutMapping("/update/{id}")
+    public ModelAndView updateContent (@PathVariable Integer id,
+                                       @Validated @ModelAttribute("formModel") TaskForm task,
+                                       BindingResult result) {
+        if (result.hasErrors()) {
+            return new ModelAndView("/edit");
+        }
+        // UrlParameterのidを更新するentityにセット
+        task.setId(id);
+        // 編集した投稿を更新
+        taskService.saveTask(task);
+        // rootへリダイレクト
         return new ModelAndView("redirect:/");
     }
 }
