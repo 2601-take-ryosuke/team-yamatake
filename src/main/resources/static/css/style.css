@@ -77,3 +77,8 @@ input[type="submit"], [type="button"]{
     font-size: 0.9em;
     margin-bottom: 10px;
 }
+
+.error-message{
+    margin-left: 5px;
+    color: #FF0000;
+}

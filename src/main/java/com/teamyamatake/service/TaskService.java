@@ -1,14 +1,19 @@
 package com.teamyamatake.service;
 
 import com.teamyamatake.common.enums.TaskStatus;
+import com.teamyamatake.controller.form.FilterForm;
 import com.teamyamatake.controller.form.TaskForm;
 import com.teamyamatake.repository.TaskRepository;
 import com.teamyamatake.repository.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.teamyamatake.repository.specification.TaskSpecification.*;
 
 @Service
 public class TaskService {
@@ -16,13 +21,35 @@ public class TaskService {
     TaskRepository taskRepository;
 
     public List<TaskForm> findAllTask() {
-        List<Task> results = taskRepository.findAllByOrderByLimitDateDesc();
+        List<Task> results = taskRepository.findTop1000ByOrderByLimitDateAsc();
         List<TaskForm> tasks = setTaskForm(results);
         return tasks;
     }
 
     public void deleteTask(Integer id) {
         taskRepository.deleteById(id);
+    }
+
+    public List<TaskForm> findByFilter(FilterForm filterForm) {
+        LocalDate since = filterForm.getSince() == null ? LocalDate.of(2020, 1, 1) : filterForm.getSince();
+        LocalDate until = filterForm.getUntil() == null ? LocalDate.of(2100, 12, 31) : filterForm.getUntil();
+
+        LocalDateTime sinceDateTime = since.atTime(0, 0, 0);
+        LocalDateTime untilDateTime = until.atTime(23, 59, 59);
+
+        Integer status = filterForm.getStatus() == null ? null : filterForm.getStatus().getValue();
+
+        String content = filterForm.getContent();
+
+        List<Task> results = taskRepository.findBy(
+                limitBetween(sinceDateTime, untilDateTime)
+                        .and(statusIs(status))
+                       .and(contentIs(content)),
+                q -> q
+                .limit(1000)
+                .sortBy(oderByLimitDate(true))
+                .all());
+        return setTaskForm(results);
     }
 
     /*
