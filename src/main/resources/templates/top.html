@@ -12,15 +12,29 @@
     <h1>ToDo</h1>
 </div>
 <div class="main-contents">
-    <div class="error-message-erea">
-        <!-- エラーメッセージ実装箇所 -->
-    </div>
-    <span class="todayDate" th:text="'本日の日付 ： ' + ${#temporals.format(todayDate, 'yyyy/MM/dd')}"></span>
+    <form th:object="${filterForm}">
+        <div th:each="error : ${#fields.allErrors()}">
+            <span class="error-message"  th:text="${error}"></span><br/>
+        </div>
+    </form>
+    <span class="todayDate" th:text="'本日の日付 ： ' + ${#temporals.format(#temporals.createNow(), 'yyyy/MM/dd')}"></span>
     <br/><a th:href="@{/new}">
         <button class="new-button" type="button">新規タスク</button>
     </a>
     <div class="filter-erea">
-        <!-- フィルター実装箇所 -->
+        <form th:object="${filterForm}" th:action="@{/filter}" method="get">
+            <label>期限</label>
+            <input type="date" th:field="*{since}">
+            <label>～</label>
+            <input type="date" th:field="*{until}">
+            <label>ステータス</label>
+            <select class="status-dropdown" th:field="*{status}">
+                <option value="">
+                <option th:each="status : ${statusList}" th:value="${status}" th:text="${status.viewName}"></option>
+            </select>
+            <input class="content-box" th:field="*{content}"/>
+            <input type="submit" value="絞り込み">
+        </form>
     </div>
     <table class="task-table">
         <tr>
@@ -46,7 +60,7 @@
             </td>
             <td>
                 <span class="limit"
-                      th:classappend="${task.limitDate.isBefore(todayDate)} ? 'limit-arrived' : 'limit-not-yet'"
+                      th:classappend="${task.limitDate.isAfter(#temporals.createNow())} ? 'limit-not-yet' : 'limit-arrived'"
                       th:text="${#temporals.format(task.limitDate, 'yyyy/MM/dd')}"/>
             </td>
             <td>

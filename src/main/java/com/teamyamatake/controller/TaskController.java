@@ -1,15 +1,18 @@
 package com.teamyamatake.controller;
 
 import com.teamyamatake.common.enums.TaskStatus;
+import com.teamyamatake.controller.form.FilterForm;
 import com.teamyamatake.controller.form.TaskForm;
 import com.teamyamatake.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,6 +21,8 @@ public class TaskController {
     @Autowired
     TaskService taskService;
 
+    final String DATE_FORMAT = "yyyy-MM-dd";
+
     /*
      * TOP画面表示
      */
@@ -25,7 +30,32 @@ public class TaskController {
     public ModelAndView top() {
         ModelAndView mav = new ModelAndView("/top");
         List<TaskForm> tasks = taskService.findAllTask();
+        FilterForm filterForm = new FilterForm();
+        mav.addObject("filterForm", filterForm);
+        mav.addObject("statusList", List.of(TaskStatus.values()));
+        mav.addObject("tasks", tasks);
+        return mav;
+    }
+
+    /*
+     * 絞り込み表示
+     */
+    @GetMapping("/filter")
+    public ModelAndView filter(
+            @Validated
+            FilterForm filterForm,
+            BindingResult bindingResult
+    ) {
+        ModelAndView mav = new ModelAndView("/top");
+
+        if(bindingResult.hasErrors()){
+            return mav;
+        }
+
+        List<TaskForm> tasks = taskService.findByFilter(filterForm);
+
         mav.addObject("todayDate", LocalDateTime.now());
+        mav.addObject("filterForm", filterForm);
         mav.addObject("statusList", List.of(TaskStatus.values()));
         mav.addObject("tasks", tasks);
         return mav;
