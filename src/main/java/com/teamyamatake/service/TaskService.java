@@ -4,6 +4,8 @@ import com.teamyamatake.common.enums.TaskStatus;
 import com.teamyamatake.controller.form.TaskForm;
 import com.teamyamatake.repository.TaskRepository;
 import com.teamyamatake.repository.entity.Task;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +66,18 @@ public class TaskService {
         List<TaskForm> reports = setTaskForm(results);
         return reports.get(0);
     }
+
+    /*
+     *　ステータス更新
+     */
+    @Transactional
+    public void updateStatus(Integer id, Integer status) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+        task.setStatus(status);  // Integer同士なので型エラーなし
+        taskRepository.save(task);
+    }
+
 
     /*
      * リクエストから取得した情報をEntityに設定

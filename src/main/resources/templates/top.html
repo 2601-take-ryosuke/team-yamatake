@@ -35,9 +35,8 @@
                 <span class="content" th:text="${task.content}"></span>
             </td>
             <td class="status">
-                <form th:object="${task}">
+                <form th:object="${task}" th:action="@{/updateStatus/{id}(id=${task.id})}" th:method="put">
                     <select class="status-dropdown">
-                        <option th:value="0"></option>
                         <option th:each="status : ${statusList}" th:value="${status.value}" th:text="${status.viewName}"
                                 th:selected="${task.status == status}"></option>
                         <input type="submit" value="変更">

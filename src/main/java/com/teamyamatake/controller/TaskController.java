@@ -87,7 +87,7 @@ public class TaskController {
     }
 
     /*
-     * 編集処理
+     * タスク編集処理
      */
     @PutMapping("/update/{id}")
     public ModelAndView updateContent (@PathVariable Integer id,
@@ -102,5 +102,17 @@ public class TaskController {
         taskService.saveTask(task);
         // rootへリダイレクト
         return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * ステータス変更処理
+     */
+    @PutMapping("/updateStatus/{id}")
+    public ModelAndView updateStatus(@PathVariable Integer id,
+                                     @ModelAttribute TaskForm task) {
+
+        taskService.updateStatus(id, task.getStatus().getValue());
+
+        return new ModelAndView("redirect:/top");
     }
 }
