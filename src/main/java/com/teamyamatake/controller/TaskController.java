@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -105,14 +106,19 @@ public class TaskController {
      * タスク編集画面表示
      */
     @GetMapping("/edit/{id}")
-    public ModelAndView editContent(@PathVariable Integer id) {
+    public ModelAndView editContent(@PathVariable Integer id,
+                                    RedirectAttributes redirectAttributes) {
         ModelAndView mav = new ModelAndView();
         // form用の空のentityを準備
         TaskForm taskForm = taskService.editTask(id);
-        // 準備した空のFormを保管
-        mav.addObject("formModel", taskForm);
-        // 画面遷移先を指定
-        mav.setViewName("/edit");
+        // 画面遷移先指定とIDの存在チェック
+        if (taskForm != null) {
+            mav.addObject("formModel", taskForm);
+            mav.setViewName("/edit");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "不正なパラメータです");
+            mav.setViewName("redirect:/");
+        }
         return mav;
     }
 

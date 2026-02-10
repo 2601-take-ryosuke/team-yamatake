@@ -88,11 +88,16 @@ public class TaskService {
      * 編集画面表示
      */
     public TaskForm editTask(Integer id) {
+        Task task = taskRepository.findById(id).orElse(null);
+        if (task == null) {
+            return null;
+        }
         List<Task> results = new ArrayList<>();
-        results.add(taskRepository.findById(id).orElse(null));
+        results.add(task);
         List<TaskForm> reports = setTaskForm(results);
         return reports.get(0);
     }
+
 
     /*
      *　ステータス更新

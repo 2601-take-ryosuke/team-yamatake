@@ -17,6 +17,10 @@
             <span class="error-message"  th:text="${error}"></span><br/>
         </div>
     </form>
+    <div th:if="${errorMessage}" class="error-message">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
     <span class="todayDate" th:text="'本日の日付 ： ' + ${#temporals.format(#temporals.createNow(), 'yyyy/MM/dd')}"></span>
     <br/><a th:href="@{/new}">
         <button class="new-button" type="button">新規タスク</button>
