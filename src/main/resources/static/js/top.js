@@ -6,3 +6,12 @@ $(function(){
 		}
 	});
 });
+
+$(function(){
+	$('.update-status-button').on('click', function(){
+		let result = window.confirm('変更してもよろしいですか？');
+		if(result == false){
+			event.preventDefault();
+		}
+	});
+});

@@ -55,7 +55,7 @@
                         <option th:each="status : ${statusList}" th:value="${status}" th:text="${status.viewName}"
                                 th:selected="${task.status == status}"></option>
                     </select>
-                    <input type="submit" value="変更">
+                    <input class="update-status-button" type="submit" value="変更">
                 </form>
             </td>
             <td>
