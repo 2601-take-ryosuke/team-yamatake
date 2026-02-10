@@ -101,7 +101,7 @@ public class TaskService {
     public void updateStatus(Integer id, Integer status) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Task not found"));
-        task.setStatus(status);  // Integer同士なので型エラーなし
+        task.setStatus(status);
         taskRepository.save(task);
     }
 

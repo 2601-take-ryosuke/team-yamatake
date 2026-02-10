@@ -138,11 +138,12 @@ public class TaskController {
      * ステータス変更処理
      */
     @PutMapping("/updateStatus/{id}")
-    public ModelAndView updateStatus(@PathVariable Integer id,
-                                     @ModelAttribute TaskForm task) {
+    public String updateStatus(@PathVariable Integer id,
+                               @ModelAttribute("formModel") TaskForm task) {
 
-        taskService.updateStatus(id, task.getStatus().getValue());
-
-        return new ModelAndView("redirect:/top");
+        task.setId(id);
+        int statusValue = task.getStatus().getValue();
+        taskService.updateStatus(id, statusValue);
+        return "redirect:/";
     }
 }

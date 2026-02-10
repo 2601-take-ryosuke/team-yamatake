@@ -50,11 +50,12 @@
             </td>
             <td class="status">
                 <form th:object="${task}" th:action="@{/updateStatus/{id}(id=${task.id})}" th:method="put">
-                    <select class="status-dropdown">
-                        <option th:each="status : ${statusList}" th:value="${status.value}" th:text="${status.viewName}"
+                    <input type="hidden" name="_method" value="put"/>
+                    <select class="status-dropdown" name="status">
+                        <option th:each="status : ${statusList}" th:value="${status}" th:text="${status.viewName}"
                                 th:selected="${task.status == status}"></option>
-                        <input type="submit" value="変更">
                     </select>
+                    <input type="submit" value="変更">
                 </form>
             </td>
             <td>
