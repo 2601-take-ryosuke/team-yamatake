@@ -1,7 +1,6 @@
 package com.teamyamatake.controller.form;
 
 import com.teamyamatake.common.enums.TaskStatus;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
