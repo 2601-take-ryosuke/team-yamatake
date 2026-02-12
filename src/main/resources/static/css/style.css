@@ -1,20 +1,47 @@
-td, th {
-    padding: 5px 5px;
+/* --- flex用に置き換え --- */
+.task-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    width: 100%;
 }
 
-input[type="submit"], [type="button"]{
-    background-color: #67BFBE;
-    color: white;
-    border: none;
-    padding: 3px 12px;
-    border-radius: 24px;
-    margin: 5px;
+.task-content {
+    flex: 0 1 300px;   /* 最小幅は300px、伸び幅は1単位に制限 */
+    max-width: 60%;     /* 画面幅の最大60%までに制限 */
+    word-break: break-word;
+    white-space: normal;
 }
 
-.delete-button{
-    background-color: #FF5353 !important;
+.task-status {
+    flex: 0 0 250px;
 }
 
+.task-status form {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.task-status select,
+.task-status input.update-status-button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.task-limit {
+    flex: 0 0 100px;
+    text-align: center;
+    margin-top: 7px;
+}
+
+.task-edit,
+.task-delete {
+    flex: 0 0 60px;
+}
+
+/* --- 元のテーブル用 CSS をそのまま残す --- */
 .content{
     background-color: #F3F3F3;
     width: 100%;
@@ -43,6 +70,20 @@ input[type="submit"], [type="button"]{
     background-color: #FF5353;
 }
 
+input[type="submit"], [type="button"]{
+    background-color: #67BFBE;
+    color: white;
+    border: none;
+    padding: 3px 12px;
+    border-radius: 24px;
+    margin: 5px;
+}
+
+.delete-button{
+    background-color: #FF5353 !important;
+}
+
+/* --- フォームページ用はそのまま --- */
 .form-area {
     max-width: 500px;
     padding: 20px;

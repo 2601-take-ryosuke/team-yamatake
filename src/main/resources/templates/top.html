@@ -40,45 +40,36 @@
             <input type="submit" value="絞り込み">
         </form>
     </div>
-    <table class="task-table">
-        <tr>
-            <th>タスク内容</th>
-            <th>ステータス</th>
-            <th>タスク期限</th>
-            <th></th>
-            <th></th>
-        </tr>
-        <tr th:each="task : ${tasks}">
-            <td>
-                <span class="content" th:text="${task.content}"></span>
-            </td>
-            <td class="status">
-                <form th:object="${task}" th:action="@{/updateStatus/{id}(id=${task.id})}" th:method="put">
-                    <input type="hidden" name="_method" value="put"/>
-                    <select class="status-dropdown" name="status">
-                        <option th:each="status : ${statusList}" th:value="${status}" th:text="${status.viewName}"
-                                th:selected="${task.status == status}"></option>
-                    </select>
-                    <input class="update-status-button" type="submit" value="変更">
-                </form>
-            </td>
-            <td>
-                <span class="limit"
-                      th:classappend="${task.limitDate.isAfter(#temporals.createNow())} ? 'limit-not-yet' : 'limit-arrived'"
-                      th:text="${#temporals.format(task.limitDate, 'yyyy/MM/dd')}"/>
-            </td>
-            <td>
-                <a th:href="@{/edit/{id}(id=${task.id})}">
-                    <input class="edit-button" type="button" value="編集">
-                </a>
-            </td>
-            <td>
-                <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
-                    <input class="delete-button" type="submit" value="削除">
-                </form>
-            </td>
-        </tr>
-    </table>
+    <div class="task-row" th:each="task : ${tasks}">
+        <div class="task-content">
+            <span class="content" th:text="${task.content}"></span>
+        </div>
+        <div class="task-status">
+            <form th:object="${task}" th:action="@{/updateStatus/{id}(id=${task.id})}" th:method="put">
+                <input type="hidden" name="_method" value="put"/>
+                <select class="status-dropdown" name="status">
+                    <option th:each="status : ${statusList}" th:value="${status}" th:text="${status.viewName}"
+                            th:selected="${task.status == status}"></option>
+                </select>
+                <input class="update-status-button" type="submit" value="変更">
+            </form>
+        </div>
+        <div class="task-limit">
+        <span class="limit"
+              th:classappend="${task.limitDate.isAfter(#temporals.createNow())} ? 'limit-not-yet' : 'limit-arrived'"
+              th:text="${#temporals.format(task.limitDate, 'yyyy/MM/dd')}"></span>
+        </div>
+        <div class="task-edit">
+            <a th:href="@{/edit/{id}(id=${task.id})}">
+                <input class="edit-button" type="button" value="編集">
+            </a>
+        </div>
+        <div class="task-delete">
+            <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
+                <input class="delete-button" type="submit" value="削除">
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>
