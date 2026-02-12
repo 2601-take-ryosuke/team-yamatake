@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class TaskForm {
 
     private int id;
-    @Pattern(regexp = "^(?![\\s　]*$).+", message = "タスクを入力してください")
+    @Pattern(regexp = "^(?s)(?![\\s　]*$).+", message = "タスクを入力してください")
     @Size(max = 140, message = "タスクは140文字以内で入力してください")
     private String content;
     private TaskStatus status;
